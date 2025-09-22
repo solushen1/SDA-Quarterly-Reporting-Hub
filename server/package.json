@@ -14,3 +14,24 @@
     "pptxgenjs": "^4.0.1"
   }
 }
+{
+  "name": "sda-reporting-api",
+  "version": "1.0.0",
+  "description": "Backend API for SDA Quarterly Reporting Hub",
+  "type": "module",
+  "main": "api.js",
+  "scripts": {
+    "start": "node api.js",
+    "dev": "node api.js"
+  },
+  "dependencies": {
+    "@google/genai": "^0.21.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "pdf-lib": "^1.17.1",
+    "pptxgenjs": "^3.12.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
