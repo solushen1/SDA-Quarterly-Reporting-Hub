@@ -31,7 +31,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm run dev"
+args = "npm run dev -- --port 5000 --host 0.0.0.0"
 waitForPort = 5000
 
 [[workflows.workflow]]
@@ -49,6 +49,18 @@ outputType = "console"
 [[ports]]
 localPort = 3001
 externalPort = 3001
+
+[[ports]]
+localPort = 5001
+externalPort = 3000
+
+[[ports]]
+localPort = 43589
+externalPort = 80
+
+[[ports]]
+localPort = 5000
+externalPort = 80
 
 [deployment]
 deploymentTarget = "autoscale"
