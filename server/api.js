@@ -13,11 +13,15 @@ app.use(express.json({ limit: '50mb' }));
 
 // Initialize Gemini AI with server-side API key (try both possible env vars)
 const API_KEY = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+let ai = null;
+
 if (!API_KEY) {
-  console.error('No API key found. Please set GEMINI_API_KEY or GOOGLE_API_KEY environment variable.');
-  process.exit(1);
+  console.warn('⚠️  No API key found. The app will start but AI features will be disabled.');
+  console.warn('   To enable AI features, set GEMINI_API_KEY environment variable.');
+} else {
+  ai = new GoogleGenAI({ apiKey: API_KEY });
+  console.log('✅ Gemini AI initialized successfully');
 }
-const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 // Helper function to generate single image
 async function generateSingleImage(prompt, imageParts = []) {
@@ -297,8 +301,10 @@ app.post('/api/generate', async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields: report, format' });
     }
 
-    if (!API_KEY) {
-      return res.status(500).json({ error: 'Gemini API key not configured' });
+    if (!API_KEY || !ai) {
+      return res.status(500).json({ 
+        error: 'Gemini API key not configured. Please set GEMINI_API_KEY environment variable to enable AI features.' 
+      });
     }
 
     // For PowerPoint with multiple slides
