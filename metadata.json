@@ -1,0 +1,5 @@
+{
+  "name": "SDA Quarterly Reporting Hub",
+  "description": "A web application for Seventh-day Adventist church departments to fill out quarterly reports, save them locally, and generate visually appealing summaries using AI. Users can select from various departmental templates, edit them, and add photos to their reports.",
+  "requestFramePermissions": []
+}
