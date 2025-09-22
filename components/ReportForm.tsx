@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import type { Report, ReportSection, ReportField } from '../types';
 import ReportSectionComponent from './ReportSection';
-import { PlusIcon, PencilIcon, CheckIcon } from './icons';
+import { PlusIcon, PencilIcon, CheckIcon, SparklesIcon } from './icons';
 
 interface ReportFormProps {
   report: Report;
   setReport: React.Dispatch<React.SetStateAction<Report | null>>;
+  onAutoFill?: () => void;
+  hasExampleData?: boolean;
 }
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).substring(2);
 
-const ReportForm: React.FC<ReportFormProps> = ({ report, setReport }) => {
+const ReportForm: React.FC<ReportFormProps> = ({ report, setReport, onAutoFill, hasExampleData }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleSectionChange = (updatedSection: ReportSection) => {
@@ -67,22 +69,34 @@ const ReportForm: React.FC<ReportFormProps> = ({ report, setReport }) => {
       <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm p-6 border-b border-gray-200">
         <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold text-gray-800">{report.name}</h2>
-            <button
-            onClick={() => setIsEditing(!isEditing)}
-            className={`flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 ${toggleButtonClasses}`}
-            >
-            {isEditing ? (
-                <>
-                <CheckIcon className="h-5 w-5 mr-2 -ml-1" />
-                Done Editing
-                </>
-            ) : (
-                <>
-                <PencilIcon className="h-5 w-5 mr-2 -ml-1" />
-                Edit Template
-                </>
-            )}
-            </button>
+            <div className="flex items-center gap-3">
+              {hasExampleData && onAutoFill && (
+                <button
+                  onClick={onAutoFill}
+                  className="flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 transition-colors"
+                  title="Fill form with example data from the PDF"
+                >
+                  <SparklesIcon className="h-5 w-5 mr-2 -ml-1" />
+                  Fill Example Data
+                </button>
+              )}
+              <button
+              onClick={() => setIsEditing(!isEditing)}
+              className={`flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 ${toggleButtonClasses}`}
+              >
+              {isEditing ? (
+                  <>
+                  <CheckIcon className="h-5 w-5 mr-2 -ml-1" />
+                  Done Editing
+                  </>
+              ) : (
+                  <>
+                  <PencilIcon className="h-5 w-5 mr-2 -ml-1" />
+                  Edit Template
+                  </>
+              )}
+              </button>
+            </div>
         </div>
       </div>
 

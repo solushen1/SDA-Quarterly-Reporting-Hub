@@ -7,6 +7,7 @@ import ReportForm from './components/ReportForm';
 import { generateReportVisual } from './services/geminiService';
 import { PlusCircleIcon, SparklesIcon } from './components/icons';
 import PPTPreviewModal, { PPTConfig } from './components/PPTPreviewModal';
+import { autoFillWithExampleData, hasExampleData } from './utils/autoFill';
 
 // A custom hook to sync state with localStorage
 const useLocalStorage = <T,>(key: string, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>] => {
@@ -96,6 +97,13 @@ export default function App() {
       setIsPPTModalOpen(false);
     }
   };
+
+  const handleAutoFill = () => {
+    if (!activeReport) return;
+    
+    const filledReport = autoFillWithExampleData(activeReport, activeReport.id);
+    setActiveReport(filledReport);
+  };
   
   const isLoading = generatingType !== null;
 
@@ -121,7 +129,12 @@ export default function App() {
 
         {activeReport ? (
           <div>
-            <ReportForm report={activeReport} setReport={setActiveReport} />
+            <ReportForm 
+              report={activeReport} 
+              setReport={setActiveReport}
+              onAutoFill={handleAutoFill}
+              hasExampleData={hasExampleData(activeReport.id)}
+            />
             <div className="mt-8 flex flex-col sm:flex-row justify-end gap-4">
                <button
                 onClick={() => handleGenerateClick('pdf')}
