@@ -1,10 +1,8 @@
 
 import type { Report } from '../types';
 
-// Get the API base URL - in development use localhost:3001, in production use relative paths
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? '/api' 
-  : 'http://localhost:3001/api';
+// Always use relative paths - Vite proxy will handle routing to backend
+const API_BASE_URL = '/api';
 
 
 
